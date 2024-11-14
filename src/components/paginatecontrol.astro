@@ -1,0 +1,30 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { CollectionEntry } from 'astro:content'
+import type { Page } from 'astro'
+
+export interface Props {
+  base: string
+  page: Page<CollectionEntry<'blog'>>
+}
+
+// const { id } = Astro.params
+const { base, page } = Astro.props
+---
+
+<div class='mt-4 flex items-center'>
+  <a
+    href={import.meta.env.BASE_URL + 'categories'}
+    class='inline-block rounded-md bg-gray-600 px-2 py-1 text-base text-white hover:bg-pink-600 md:text-lg'
+  >
+    Categories
+  </a>
+  <a
+    href={import.meta.env.BASE_URL + 'tags'}
+    class='ml-4 inline-block rounded-md bg-gray-600 px-2 py-1 text-base text-white hover:bg-pink-600 md:text-lg'
+  >
+    Tags
+  </a>
+      </div>
+  </p>
+</div>

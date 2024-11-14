@@ -1,0 +1,37 @@
+/* Global styles */
+nav {
+    transition: padding 0.3s ease; /* Smooth transition for padding change */
+  }
+  
+  /* Add responsive styles */
+  @media (max-width: 768px) {
+    nav {
+      padding: 0 1rem; /* Add some padding for smaller screens */
+    }
+  
+    .flex {
+      flex-direction: column; /* Stack items vertically on mobile */
+    }
+  
+    .lg\:hidden {
+      display: none; /* Ensure hidden items do not show on mobile */
+    }
+  
+    /* Mobile menu styles */
+    .absolute {
+      position: absolute; /* Ensure proper positioning for mobile menu */
+      z-index: 50; /* Maintain stacking order */
+    }
+  
+    /* Adjust the mobile button for better touch targets */
+    button {
+      padding: 0.5rem; /* Ensure there's enough touch area */
+    }
+  }
+  
+  @media (min-width: 768px) {
+    nav {
+      padding: 0 2rem; /* More padding for larger screens */
+    }
+  }
+  

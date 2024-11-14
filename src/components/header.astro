@@ -1,0 +1,119 @@
+---
+import { Icon } from 'astro-icon/components'
+import { NavigationLinks } from '../config'
+import Search from '../components/search.astro'
+import Theme from '../components/theme.astro'
+import picture1 from '/src/assets/svg/undraw/ml.png';
+---
+
+<div class='relative h-16 w-full'>
+  <nav x-data='{ isOpen: false }' class='dark:bg-gray-900'>
+    <div class='fixed z-50 mx-auto w-full border-b-2 border-gray-700 bg-gray-100 px-2 dark:border-gray-600 dark:bg-gray-900 sm:px-6 lg:px-8'>
+      <div class='relative flex h-16 items-center justify-between'>
+        <div class='absolute inset-y-0 left-0 flex items-center lg:hidden'>
+          <!-- Mobile menu button-->
+          <button
+            type='button'
+            x-on:click='isOpen = !isOpen'
+            class='inline-flex items-center justify-center rounded-md p-2 text-purple-600 hover:bg-purple-200 hover:text-pink-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-300 dark:text-purple-300 dark:hover:bg-purple-800 dark:hover:text-pink-300 dark:focus:ring-purple-800'
+            aria-controls='mobile-menu'
+            aria-expanded='false'
+          >
+          </button>
+        </div>
+        <div class='flex items-center'>
+          <!-- Logo Section -->
+          <div class='flex flex-shrink-0 items-center'>
+            <a href="https://futurx.in/" aria-label="FuturX Logo">
+              <img class='block h-12 w-16 dark:bg-gray-200' src={picture1.src} alt='Logo' />
+            </a>
+          </div>
+
+                    <!-- Blog Link (only visible on larger screens) -->
+                    <div class='ml-4 hidden lg:flex'>
+                      {
+                        NavigationLinks.filter(item => item.name === "Blog").map((item) => (
+                          <a
+                            href={import.meta.env.BASE_URL + item.href}
+                            class={(
+                              item.href.length > 0 && Astro.url.toString().includes(item.href)
+                                ? 'bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-100'
+                                : 'text-gray-600 hover:bg-gray-300 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-100') +
+                              ' rounded-md px-2 py-2 text-lg font-medium'
+                            }
+                            aria-current={item.href.length > 0 && Astro.url.toString().includes(item.href) ? 'page' : undefined}
+                          >
+                            {item.name}
+                          </a>
+                        ))
+                      }
+                    </div>
+                  </div>
+          
+        <div
+          class='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'
+        >
+          <Search />
+          <Theme />
+          <!-- Mobile menu button -->
+          <button
+            type='button'
+            x-on:click='isOpen = !isOpen'
+            class='lg:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-200 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-300 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-100 dark:focus:ring-gray-800'
+            aria-controls='mobile-menu'
+            :aria-expanded='isOpen'
+          >
+            <span class='sr-only'>Open main menu</span>
+            <Icon
+              x-bind:class="{'hidden': isOpen, 'block': !isOpen }"
+              class='block h-6 w-6'
+              aria-hidden='true'
+              name='heroicons:bars-3'
+            />
+            <Icon
+              x-bind:class="{'block': isOpen, 'hidden': !isOpen }"
+              class='hidden h-6 w-6'
+              aria-hidden='true'
+              name='heroicons:x-mark'
+            />
+          </button>
+
+          <!-- Right nav -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu, show/hide based on menu state. -->
+    <div
+      x-show='isOpen'
+      x-cloak
+      x-transition:enter='transition ease-out duration-100 transform'
+      x-transition:enter-start='opacity-0 scale-95'
+      x-transition:enter-end='opacity-100 scale-100'
+      x-transition:leave='transition ease-in duration-75 transform'
+      x-transition:leave-start='opacity-100 scale-100'
+      x-transition:leave-end='opacity-0 scale-95'
+      class='absolute inset-x-0 top-16 z-50'
+      id='mobile-menu'
+    >
+    <div class='flex justify-center border-b-2 border-t-2 border-gray-600 bg-gray-100 px-4 py-2 font-semibold dark:border-gray-700 dark:bg-gray-900'>
+      {
+        // Show the Blog link in mobile menu
+        NavigationLinks.filter(item => item.name === "Blog").map((item) => (
+          <a
+            href={import.meta.env.BASE_URL + item.href}
+            class:list={[(
+              item.href.length > 0 && Astro.url.toString().includes(item.href)
+                ? 'bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-100'
+                : 'text-gray-600 hover:bg-gray-300 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-100'
+            ), ' block px-4 py-2 text-center text-lg']}
+            aria-current={item.href.length > 0 && Astro.url.toString().includes(item.href) ? 'page' : undefined}
+          >
+            {item.name}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</nav>
+</div>

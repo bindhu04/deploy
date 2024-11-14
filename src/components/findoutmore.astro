@@ -1,0 +1,78 @@
+---
+import VisaSVG from '../assets/svg/undraw/vs.jpg';
+import UniversitySVG from '../assets/svg/undraw/sel.svg';
+import ScholarshipsSVG from '../assets/svg/undraw/HA11.jpg';
+
+// Retrieve the base path from environment variables
+const basePath = import.meta.env.BASE_URL || '/';
+
+const callouts = [
+  {
+    name: 'Visa Guidance',
+    description: 'Get step-by-step help with your student visa application for a seamless process.',
+    imageSrc: VisaSVG.src,
+    imageAlt: 'Visa application illustration',
+    href: `${basePath}visa-guidance`
+  },
+  {
+    name: 'University Selection',
+    description:
+      'Explore top universities worldwide, with personalized recommendations based on your interests.',
+    imageSrc: UniversitySVG.src,
+    imageAlt: 'University selection illustration',
+    href: `${basePath}university-selection`
+  },
+  {
+    name: 'Scholarships & Financial Aid',
+    description: 'Learn how to apply for scholarships and financial aid to support your education.',
+    imageSrc: ScholarshipsSVG.src,
+    imageAlt: 'Scholarship application illustration',
+    href: `${basePath}scholarships-financial-aid`
+  }
+];
+---
+
+<div class='dark:bg-black-900 bg-gray-100'>
+  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    <div class='mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32'>
+      <h2 class='text-black-800 dark:text-black-100 text-4xl font-extrabold'>Explore Resources</h2>
+      <div class='mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0'>
+        {
+          callouts.map((callout) => (
+            <div class='group relative'>
+              <div class='relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 dark:bg-gray-600 sm:h-64'>
+                <img
+                  src={callout.imageSrc}
+                  alt={callout.imageAlt}
+                  class='h-full w-full object-contain object-center'
+                  loading='lazy'
+                />
+              </div>
+              <h3 class='mt-6 text-2xl text-gray-500 dark:text-gray-500'>
+                <a href={callout.href}>
+                  <span class='absolute inset-0' />
+                  {callout.name}
+                </a>
+              </h3>
+              <p class='text-base text-gray-900 dark:text-gray-400'>{callout.description}</p>
+            </div>
+          ))
+        }
+      </div>
+      <!-- Embedded Video Section -->
+      <section class='video-section py-10'>
+        <h2 class='mb-6 text-center text-3xl font-bold'>Discover Higher Education Abroad</h2>
+        <div class='video-wrapper mx-auto max-w-4xl'>
+          <iframe
+            width='100%'
+            height='400'
+            src='https://www.youtube.com/embed/Ai3-EjBpuhs'
+            title='Higher Education Abroad'
+            frameborder='0'
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+            allowfullscreen></iframe>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { getEntry } from 'astro:content'
+import { Image } from 'astro:assets'
+import { Icon } from 'astro-icon/components'
+import Categories from '../components/categories.astro'
+import Tags from '../components/tags.astro'
+
+export interface Props {
+  post: CollectionEntry<'blog'>
+}
+
+const { post } = Astro.props
+
+let cat = await getEntry('category', 'general')
+if (post.data.categories) {
+  cat = await getEntry(post.data.categories[0])
+}
+const image =
+  post.data.coverSVG ||
+  post.data.coverImage ||
+  (post.data.images && post.data.images[0]) ||
+  post.data.socialImage ||
+  cat.data.coverSVG
+let author = await getEntry('author', 'default')
+if (post.data.author) {
+  author = await getEntry(post.data.author)
+}
+---
+
+<head>
+  <title>{post.data.title}</title>
+  <meta name="description" content={post.data.description} />
+  
+</head>
+
+<div class='relative mx-auto my-4 h-96 w-full max-w-screen-xl md:mb-0'>
+  <div
+    class='absolute bottom-0 left-0 z-10 h-full w-full bg-gradient-to-t from-gray-700 xl:rounded-lg'
+  >
+  </div>
+  <Image
+    itemprop='image'
+    src={image}
+    alt='featured image'
+    class='absolute left-0 top-0 z-0 h-full w-full object-cover'
+  />
+  <div class='absolute bottom-0 left-0 z-20 p-4'>
+    {post.data.categories && <Categories categories={post.data.categories} />}
+    <h2 class='text-4xl font-bold leading-tight text-white'>
+      {post.data.title}
+    </h2>
+    <h2 class='text-xl font-medium italic text-blue-200'>
+      {post.data.description}
+    </h2>
+    <Tags tags={post.data.tags} />
+  </div>
+</div>

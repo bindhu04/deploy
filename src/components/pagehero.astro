@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets'
+import bgImage from '../assets/svg/undraw/bg.webp'
+
+export interface Props {
+  title: string
+  description?: string
+}
+
+const { title, description } = Astro.props
+---
+
+<div class='relative mx-auto h-96 w-full max-w-screen-xl md:my-4'>
+  <div
+    class='absolute bottom-0 left-0 z-10 h-full w-full bg-gradient-to-t from-gray-700 xl:rounded-lg'
+  >
+  </div>
+
+  <Image
+    itemprop='image'
+    src={bgImage}
+    alt={title}
+    width={800}
+    height={600}
+    class='absolute left-0 top-0 z-0 h-full w-full object-cover'
+  />
+
+  <div class='absolute bottom-0 left-0 z-20 p-4'>
+    <slot name='before' />
+    <h2 itemprop='name' class='text-4xl font-bold leading-tight text-white'>{title}</h2>
+    <h2 itemprop='abstract description' class='text-xl font-medium italic text-gray-300'>
+      {description}
+    </h2>
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,136 @@
+---
+// import { ViewTransitions } from 'astro:transitions'
+import type { CollectionEntry } from 'astro:content'
+import SEO from '../components/seo.astro'
+import Header from '../components/header.astro'
+import Gallery from '../components/gallery.astro'
+import { SiteMetadata } from '../config'
+
+export interface Props {
+  frontmatter: CollectionEntry<'blog'>['data'] | CollectionEntry<'page'>['data']
+  schema?: string
+}
+
+const { frontmatter, schema = 'WebPage' } = Astro.props
+---
+
+<!doctype html>
+<html lang='en' itemscope itemtype={`https://schema.org/${schema}`}>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='icon' href={`${Astro.site}favicon.ico`} sizes='any' />
+    <link rel='icon' href={`${Astro.site}favicon.svg`} type='image/svg+xml' />
+    <link rel='apple-touch-icon' href={`${Astro.site}apple-touchicon.png`} />
+    <link rel='manifest' href={`${Astro.site}site.webmanifest`} />
+    <link rel='sitemap' href={`${Astro.site}sitemap-index.xml`} />
+    <link rel='alternate' type='application/rss+xml' title={SiteMetadata.title} href={`${Astro.site}rss.xml`} />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+<!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <meta name='generator' content={Astro.generator} />
+    <!-- <SEO frontmatter={frontmatter} /> -->
+    <script is:inline>
+      const setDarkMode = () => {
+        if (
+          localStorage.theme === 'dark' ||
+          (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+      }
+      setDarkMode(); // initial navigation
+      document.addEventListener('astro:after-swap', setDarkMode); // Runs on view transitions navigation
+    </script>
+    <style is:inline>
+      [x-cloak] {
+        display: none !important;
+      }
+      .markmap > svg {
+        width: 100%;
+        height: 400px;
+      }
+      
+      /* Responsive styles */
+      h1, h2{
+        font-family: "Orbitron", sans-serif;
+      }
+      body, h3, h4, h5, .italic {
+        font-family: "Montserrat", sans-serif; /* Use a responsive font */
+      }
+
+      h1, h2, h3 {
+        margin: 0; /* Ensure consistent margin */ 
+      }
+
+      /* p, h4, h3, strong{
+        font-family: "Montserrat", sans-serif;
+      } */
+      /* Mobile styles */
+      @media (max-width: 640px) {
+        h1 {
+          font-size: 1.5rem; /* Adjust heading size for mobile */
+        }
+        h2 {
+          font-size: 1.25rem; /* Adjust heading size for mobile */
+        }
+        h3 {
+          font-size: 1rem; /* Adjust heading size for mobile */
+        }
+        /* Add padding and margins */
+        .content {
+          padding: 1rem; /* Add padding for mobile */
+        }
+      }
+      
+      /* Tablet styles */
+      @media (min-width: 641px) and (max-width: 1024px) {
+        h1 {
+          font-size: 2rem; /* Slightly larger for tablets */
+        }
+        .content {
+          padding: 1.5rem; /* Add padding for tablets */
+        }
+      }
+    </style>
+    {
+      frontmatter.extra?.includes('math') && (
+        <link
+          rel='stylesheet'
+          href='https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css'
+          integrity='sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI'
+          crossorigin='anonymous'
+        />
+      )
+    }
+    <slot name='in-head' />
+  </head>
+  <body class='dark:bg-gray-900'>
+    <Header />
+    <div class="content">
+      <slot />
+      {frontmatter.gallery && <Gallery folder={frontmatter.gallery} />}
+      <slot name='before-footer' />
+    </div>
+    {/* <Footer /> */}
+    {
+      frontmatter.extra?.includes('markmap') && (
+        <script is:inline data-astro-rerun src='https://cdn.jsdelivr.net/npm/markmap-autoloader' />
+      )
+    }
+    {
+      frontmatter.extra?.includes('mermaid') && (
+        <script is:inline data-astro-rerun type='module'>
+          import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+          mermaid.initialize({ startOnLoad: true });
+        </script>
+      )
+    }
+  </body>
+</html>
